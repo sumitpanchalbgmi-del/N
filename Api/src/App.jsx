@@ -4,11 +4,29 @@
 
 import products from './Product';
 import { CartReducer, initialState } from './CartReducer';
-
+import UsecallbackuseMemo from './Components/UsecallbackuseMemo';
+import UsememoExample from './Components/UsememoExample';
 const App = () => {
   const [state, dispatch] = useReducer(CartReducer, initialState);
   const [coupon, setCoupon] = useState("");
+  const [sort, setSort] = useState("");
+  
+     
+ 
+  const [sortOrder, setSortOrder] = useState("");
 
+  const getSortedProducts = () => {
+    const productsCopy = [...products];
+
+    if (sortOrder === "lowToHigh") {
+      return productsCopy.sort((a, b) => Number(a.price) - Number(b.price));
+    }
+    if (sortOrder === "highToLow") {
+      return productsCopy.sort((a, b) => Number(b.price) - Number(a.price));
+    }
+    
+    return productsCopy; 
+  };
   return (
     <div>
       <h1>Shopping Cart</h1>
@@ -31,13 +49,26 @@ const App = () => {
             })
           }
         >
+          
           Apply Coupon
         </button>
       </div>
+          <div>
+            <select
+              value={sortOrder}
+              onChange={(e) => setSortOrder(e.target.value)}
+            >
+              <option value="">Select Option</option>
+              <option value="lowToHigh">Price: Low to High</option>
+              <option value="highToLow">Price: High to Low</option>
+            </select>
+          </div>
 
       <h2>Total : Rs {state.total}</h2>
-
-      {products.map((product) => (
+      <UsecallbackuseMemo />
+      <UsememoExample />
+    
+      {getSortedProducts().map((product) => (
         <div
           key={product.id}
           style={{
@@ -46,6 +77,8 @@ const App = () => {
             marginBottom: 15
           }}
         >
+      
+
           <h3>{product.name}</h3>
           <p>{product.price}</p>
           <button

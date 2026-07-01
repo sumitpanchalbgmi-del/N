@@ -61,6 +61,7 @@ export function CartReducer(state, action) {
                 total: calculateTotal(state.cart, discount),
             };
         }
+        
   
         case "clean cart": {
             return {
